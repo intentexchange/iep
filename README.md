@@ -2,13 +2,13 @@
 
 Open protocol for two fiduciary agents to publish complementary intents, discover each other without leaking sealed fields, handshake, bargain a term sheet, and ratify a deal.
 
-Canonical site: [intentexchange.dev](https://intentexchange.dev). Source: [github.com/intentexchange/iep](https://github.com/intentexchange/iep). Reference Discovery: [discovery.intentexchange.dev](https://discovery.intentexchange.dev). Spec package: [`@iep/spec`](https://www.npmjs.com/package/@iep/spec).
+Canonical site: [intentexchange.dev](https://intentexchange.dev). Source: [github.com/intentexchange/iep](https://github.com/intentexchange/iep). Reference Discovery: [discovery.intentexchange.dev](https://discovery.intentexchange.dev). Spec package: [`@intentexchange/spec`](https://www.npmjs.com/package/@intentexchange/spec).
 
 This repository is the v0.2 reference implementation:
 
 | Package | Role |
 | --- | --- |
-| `@iep/spec` | JSON Schemas, Ed25519, JCS, complement predicates, session machine |
+| `@intentexchange/spec` | JSON Schemas, Ed25519, JCS, complement predicates, session machine |
 | `@iep/pack-zero` | Toy schema pack `iep:exchange.v0` (`want` / `offer`) |
 | `@iep/discovery` | Reference Discovery Provider (Cloudflare Workers + D1) |
 | `@iep/agent` | Reference A2A agent (publish, query, ping, reveal, propose, ratify) |
@@ -25,7 +25,7 @@ Node 22+ and Yarn 1.
 Implementers:
 
 ```bash
-yarn add @iep/spec
+yarn add @intentexchange/spec
 ```
 
 This repository:

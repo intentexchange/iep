@@ -1,5 +1,5 @@
 import { OFFER_MANDATE, OFFER_MANDATE_NO_ZONE, WANT_1, WANT_MANDATE, WANT_MANDATE_NO_ZONE, OFFER_1 } from "@iep/pack-zero";
-import { type Mandate, type Range, type UnsignedMandate } from "@iep/spec";
+import { type Mandate, type Range, type UnsignedMandate } from "@intentexchange/spec";
 import { describe, expect, it } from "vitest";
 import { decide, deriveStartAt, intersectRanges, openingPrice, roundPrice, windowStartOf } from "./negotiate.js";
 

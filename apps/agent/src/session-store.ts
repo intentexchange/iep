@@ -7,7 +7,7 @@ import {
   type Ratification,
   type SessionState,
   type TermSheet,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 
 export type SessionEntry = {
   id: string;

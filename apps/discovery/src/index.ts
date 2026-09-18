@@ -14,7 +14,7 @@ import {
   type IntentDocument,
   type SchemaPack,
   verifyDidSignature,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { categoryOf, decodeCursor, encodeCursor, rateLimit } from "./util.js";

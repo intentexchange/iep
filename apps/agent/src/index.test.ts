@@ -1,5 +1,5 @@
 import { PACK_ZERO } from "@iep/pack-zero";
-import { authorize, ERROR_CODES, generateKeyPair, IepError, signDocument, type Mandate } from "@iep/spec";
+import { authorize, ERROR_CODES, generateKeyPair, IepError, signDocument, type Mandate } from "@intentexchange/spec";
 import { describe, expect, it } from "vitest";
 import { autoSigner } from "./principal.js";
 

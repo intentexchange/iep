@@ -1,9 +1,9 @@
-# `@iep/spec`
+# `@intentexchange/spec`
 
 Intent Exchange Protocol v0.2: JSON Schemas, Ed25519, RFC 8785 JCS, complement predicates, and the session state machine.
 
 ```bash
-yarn add @iep/spec
+yarn add @intentexchange/spec
 ```
 
 ```ts
@@ -12,7 +12,7 @@ import {
   REFERENCE_DISCOVERY_URL,
   parseIntentDocument,
   verifyDidSignature,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 ```
 
 Canonical spec: [intentexchange.dev/protocol](https://intentexchange.dev/protocol).

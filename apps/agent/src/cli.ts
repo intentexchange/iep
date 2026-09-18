@@ -11,7 +11,7 @@ import {
   type JsonObject,
   type Mandate,
   type UnsignedMandate,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 import { autoSigner, denySigner } from "./principal.js";
 import { startAgent } from "./runtime.js";
 import type { AgentRole } from "./types.js";

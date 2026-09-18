@@ -36,7 +36,7 @@ import {
   type TermSheet,
   type UnsignedVerbEnvelope,
   type VerbEnvelope,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 import type { DiscoveryClient } from "./discovery-client.js";
 import { decide } from "./negotiate.js";
 import {

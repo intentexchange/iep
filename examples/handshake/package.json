@@ -11,7 +11,7 @@
   "dependencies": {
     "@iep/agent": "0.1.0",
     "@iep/pack-zero": "0.1.0",
-    "@iep/spec": "0.2.0"
+    "@intentexchange/spec": "0.2.0"
   },
   "devDependencies": {
     "@types/node": "24.5.2",

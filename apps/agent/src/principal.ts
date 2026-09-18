@@ -4,7 +4,7 @@ import {
   termSheetHash,
   type AgentKeyPair,
   type TermSheet,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 import type { PrincipalSigner } from "./types.js";
 
 export const autoSigner = (keys: AgentKeyPair): PrincipalSigner => ({

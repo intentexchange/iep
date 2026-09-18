@@ -1,5 +1,5 @@
 {
-  "name": "@iep/spec",
+  "name": "@intentexchange/spec",
   "version": "0.2.0",
   "description": "Intent Exchange Protocol types, JSON Schemas, Ed25519, JCS, and session machine",
   "license": "Apache-2.0",

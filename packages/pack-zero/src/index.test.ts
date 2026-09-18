@@ -1,4 +1,4 @@
-import { isComplement } from "@iep/spec";
+import { isComplement } from "@intentexchange/spec";
 import { describe, expect, it } from "vitest";
 import { FEASIBILITY_MATRIX, OFFERS, WANTS } from "./fixtures.js";
 import { PACK_ZERO } from "./pack.js";

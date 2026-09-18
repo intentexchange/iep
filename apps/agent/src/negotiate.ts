@@ -1,4 +1,4 @@
-import { mandateMaxRounds, mandateTolerance, type Mandate, type Range } from "@iep/spec";
+import { mandateMaxRounds, mandateTolerance, type Mandate, type Range } from "@intentexchange/spec";
 
 export type AgentSide = "want" | "offer";
 

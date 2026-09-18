@@ -1,4 +1,4 @@
-import { ERROR_CODES, IepError, type JsonObject, type QueryHit, type QueryResult } from "@iep/spec";
+import { ERROR_CODES, IepError, type JsonObject, type QueryHit, type QueryResult } from "@intentexchange/spec";
 
 export type DiscoveryIntent = {
   agent_did: string;
@@ -11,7 +11,7 @@ export type DiscoveryIntent = {
 export class DiscoveryClient {
   constructor(private readonly baseUrl: string) {}
 
-  async put(doc: import("@iep/spec").IntentDocument): Promise<void> {
+  async put(doc: import("@intentexchange/spec").IntentDocument): Promise<void> {
     const response = await fetch(`${this.baseUrl}/v0/intents`, {
       method: "PUT",
       headers: { "content-type": "application/json" },

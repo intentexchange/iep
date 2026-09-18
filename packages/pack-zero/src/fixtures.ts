@@ -1,4 +1,4 @@
-import { IEP_VERSION, type IntentDocument, type JsonObject, type UnsignedMandate } from "@iep/spec";
+import { IEP_VERSION, type IntentDocument, type JsonObject, type UnsignedMandate } from "@intentexchange/spec";
 import { PACK_ZERO } from "./pack.js";
 
 const placeholder = (

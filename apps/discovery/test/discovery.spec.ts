@@ -6,7 +6,7 @@ import {
   signDocument,
   type IntentDocument,
   type UnsignedIntentDocument,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 import { env } from "cloudflare:workers";
 import { createExecutionContext, waitOnExecutionContext } from "cloudflare:test";
 import { beforeAll, describe, expect, it } from "vitest";

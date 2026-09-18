@@ -28,7 +28,7 @@ import {
   type RevealBody,
   type TermSheet,
   type VerbEnvelope,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 import { deriveStartAt, intersectRanges, windowStartOf } from "./negotiate.js";
 import type { SessionEntry } from "./session-store.js";
 import type { AgentRole } from "./types.js";

@@ -83,7 +83,7 @@ export const HomePage = () => {
         <div className="mt-10 border-t border-ink/10 pt-6">
           <p className="font-mono text-xs tracking-widest text-ink/50 uppercase">Install / run</p>
           <pre className="mt-3 font-mono text-sm leading-7 text-ink">
-            {`yarn add @iep/spec
+            {`yarn add @intentexchange/spec
 git clone https://github.com/intentexchange/iep.git
 yarn install
 yarn demo`}

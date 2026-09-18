@@ -19,7 +19,7 @@ import {
   verifyRatification,
   type Mandate,
   type UnsignedMandate,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../../..");

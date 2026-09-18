@@ -38,7 +38,7 @@ import {
   type UnsignedIntentDocument,
   type UnsignedVerbEnvelope,
   type VerbEnvelope,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 import express from "express";
 import { DiscoveryClient } from "./discovery-client.js";
 import { extractEnvelopeFromResult, extractFailureText, IepExecutor } from "./executor.js";

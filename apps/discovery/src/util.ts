@@ -1,4 +1,4 @@
-import type { IntentDocument } from "@iep/spec";
+import type { IntentDocument } from "@intentexchange/spec";
 
 const WINDOW_MS = 60_000;
 const LIMIT = 30;

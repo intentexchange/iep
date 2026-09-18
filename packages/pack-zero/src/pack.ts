@@ -1,4 +1,4 @@
-import type { SchemaPack } from "@iep/spec";
+import type { SchemaPack } from "@intentexchange/spec";
 
 export const PACK_ZERO_ID = "iep:exchange.v0";
 

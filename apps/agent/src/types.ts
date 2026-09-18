@@ -6,7 +6,7 @@ import type {
   SessionState,
   TermSheet,
   VerbName,
-} from "@iep/spec";
+} from "@intentexchange/spec";
 
 export type AgentRole = "want" | "offer";
 
