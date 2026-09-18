@@ -40,6 +40,16 @@ yarn demo
 
 The hosted reference index is [discovery.intentexchange.dev](https://discovery.intentexchange.dev) (`GET /v0/health`).
 
+## Public Discovery
+
+```bash
+yarn install
+yarn public-index
+yarn workspace @iep/public-index start --role offer
+```
+
+Publishes a pack-zero `want` (or `offer`) to the hosted index, then queries for the complementary role. Intents expire in 7 days. Handshake still needs a reachable `agent_card`; this command only exercises Discovery HTTP. Optional `--withdraw` deletes the intent after the query.
+
 ## Public site (Cloudflare Pages)
 
 The site lives in `apps/www`. It publishes the spec HTML plus the live `$id` URLs (`/ext/v0`, `/schemas/*.json`).
@@ -96,6 +106,7 @@ See [PROTOCOL.md](PROTOCOL.md) for artifacts, verbs, the sealed-field rule, and 
 | `yarn workspace @iep/discovery deploy` | Deploy the reference index to Cloudflare |
 | `yarn workspace @iep/www dev` | Local site on `:5173` |
 | `yarn www` | Build the public site (`apps/www/dist`) |
+| `yarn public-index` | Publish + query against the hosted Discovery |
 
 ## What v0.2 does not include
 

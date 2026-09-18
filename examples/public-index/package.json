@@ -1,0 +1,19 @@
+{
+  "name": "@iep/public-index",
+  "version": "0.2.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "tsc -p tsconfig.json && node dist/run.js"
+  },
+  "dependencies": {
+    "@iep/pack-zero": "0.1.0",
+    "@intentexchange/spec": "0.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "typescript": "5.9.3"
+  }
+}

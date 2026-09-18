@@ -86,7 +86,8 @@ export const HomePage = () => {
             {`yarn add @intentexchange/spec
 git clone https://github.com/intentexchange/iep.git
 yarn install
-yarn demo`}
+yarn demo
+yarn public-index`}
           </pre>
         </div>
       </aside>
