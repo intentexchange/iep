@@ -16,6 +16,7 @@ import {
   verifyDidSignature,
 } from "@iep/spec";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { categoryOf, decodeCursor, encodeCursor, rateLimit } from "./util.js";
 
 const PACKS = new Map<string, SchemaPack>([[PACK_ZERO_ID, PACK_ZERO]]);
@@ -71,6 +72,24 @@ const rowToDocument = (row: Record<string, unknown>): IntentDocument => {
 };
 
 const app = new Hono<{ Bindings: Env }>();
+
+app.use(
+  "*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type"],
+  }),
+);
+
+app.get("/", (c) =>
+  c.json({
+    service: "iep-discovery",
+    iep: IEP_VERSION,
+    spec: "https://intentexchange.dev/protocol",
+    health: "/v0/health",
+  }),
+);
 
 app.get("/v0/health", (c) => c.json({ ok: true, iep: IEP_VERSION }));
 

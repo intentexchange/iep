@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@iep/pack-zero": "0.1.0",
-    "@iep/spec": "0.1.0",
+    "@iep/spec": "0.2.0",
     "hono": "4.13.8"
   },
   "devDependencies": {

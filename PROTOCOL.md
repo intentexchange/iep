@@ -66,6 +66,8 @@ Nonces are unique per session after handshake (`IEP_REPLAY`). Envelope `ts` must
 
 ## v0 Discovery API
 
+Reference provider: `https://discovery.intentexchange.dev`. Discovery is a role; anyone can host another.
+
 - `GET /v0/health`
 - `PUT /v0/intents` — signed `IntentDocument`
 - `DELETE /v0/intents/:id` — body `{ ts, signature }` over `{ method: "DELETE", id, ts }`

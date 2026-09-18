@@ -1,6 +1,7 @@
 export const IEP_VERSION = "0.2" as const;
 export const IEP_MEDIA_TYPE = "application/intent+json";
 export const IEP_EXTENSION_URI = "https://intentexchange.dev/ext/v0";
+export const REFERENCE_DISCOVERY_URL = "https://discovery.intentexchange.dev";
 
 export const DEFAULT_MAX_ROUNDS = 8;
 export const DEFAULT_TOLERANCE = 1;

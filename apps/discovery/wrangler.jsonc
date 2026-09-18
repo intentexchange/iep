@@ -1,6 +1,7 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "iep-discovery",
+  "account_id": "03514e2f2a3a904ae50fff209421a48c",
   "main": "src/index.ts",
   "compatibility_date": "2026-09-18",
   "compatibility_flags": ["nodejs_compat"],
@@ -8,11 +9,18 @@
     "enabled": true,
     "head_sampling_rate": 1
   },
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "discovery.intentexchange.dev",
+      "custom_domain": true
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "iep-discovery",
-      "database_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "database_id": "b50eacb2-8a34-4054-b826-c4e1999a43a6",
       "migrations_dir": "migrations"
     }
   ]

@@ -29,6 +29,7 @@ export {
   IEP_EXTENSION_URI,
   IEP_MEDIA_TYPE,
   IEP_VERSION,
+  REFERENCE_DISCOVERY_URL,
   TS_SKEW_MS,
   type ComplementOp,
   type ComplementQuery,

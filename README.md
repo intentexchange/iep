@@ -2,7 +2,7 @@
 
 Open protocol for two fiduciary agents to publish complementary intents, discover each other without leaking sealed fields, handshake, bargain a term sheet, and ratify a deal.
 
-Canonical site: [intentexchange.dev](https://intentexchange.dev). Source: [github.com/intentexchange/iep](https://github.com/intentexchange/iep).
+Canonical site: [intentexchange.dev](https://intentexchange.dev). Source: [github.com/intentexchange/iep](https://github.com/intentexchange/iep). Reference Discovery: [discovery.intentexchange.dev](https://discovery.intentexchange.dev). Spec package: [`@iep/spec`](https://www.npmjs.com/package/@iep/spec).
 
 This repository is the v0.2 reference implementation:
 
@@ -22,6 +22,14 @@ Node 22+ and Yarn 1.
 
 ## Quick start
 
+Implementers:
+
+```bash
+yarn add @iep/spec
+```
+
+This repository:
+
 ```bash
 yarn install
 yarn test
@@ -29,6 +37,8 @@ yarn demo
 ```
 
 `yarn demo` starts a local Discovery Worker and two agents (want / offer). They publish, query, ping, accept, reveal ranges, bargain price, and ratify. Both sides print the same session id and deal id. A second pair with non-overlapping bands exits `REJECTED no_zone`. The process exits 0.
+
+The hosted reference index is [discovery.intentexchange.dev](https://discovery.intentexchange.dev) (`GET /v0/health`).
 
 ## Public site (Cloudflare Pages)
 
@@ -83,6 +93,7 @@ See [PROTOCOL.md](PROTOCOL.md) for artifacts, verbs, the sealed-field rule, and 
 | `yarn demo` | Handshake + deal acceptance test |
 | `yarn types` | `wrangler types` for Discovery |
 | `yarn workspace @iep/discovery dev` | Local Discovery on `:8787` |
+| `yarn workspace @iep/discovery deploy` | Deploy the reference index to Cloudflare |
 | `yarn workspace @iep/www dev` | Local site on `:5173` |
 | `yarn www` | Build the public site (`apps/www/dist`) |
 

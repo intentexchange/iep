@@ -15,6 +15,12 @@ export const ProtocolPage = () => {
           <p className="font-mono text-xs tracking-widest text-ink/50 uppercase">Canonical</p>
           <ul className="mt-4 space-y-3 text-sm">
             <li>
+              <a className="text-rust hover:underline" href="https://discovery.intentexchange.dev">
+                discovery.intentexchange.dev
+              </a>
+              <p className="mt-1 text-ink/60">Reference Discovery Provider</p>
+            </li>
+            <li>
               <a className="text-rust hover:underline" href="/ext/v0">
                 /ext/v0
               </a>

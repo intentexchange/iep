@@ -1,8 +1,28 @@
 {
   "name": "@iep/spec",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "Intent Exchange Protocol types, JSON Schemas, Ed25519, JCS, and session machine",
   "license": "Apache-2.0",
   "type": "module",
+  "homepage": "https://intentexchange.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intentexchange/iep.git",
+    "directory": "packages/spec"
+  },
+  "bugs": {
+    "url": "https://github.com/intentexchange/iep/issues"
+  },
+  "keywords": [
+    "iep",
+    "intent-exchange",
+    "a2a",
+    "agents",
+    "protocol"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -12,10 +32,11 @@
     },
     "./schemas/*": "./schemas/*"
   },
-  "files": ["dist", "schemas"],
+  "files": ["dist", "schemas", "README.md"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "tsc -p tsconfig.json && vitest run"
   },
   "devDependencies": {
     "ajv": "8.20.0",

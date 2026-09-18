@@ -74,12 +74,17 @@ export const HomePage = () => {
           <a className="text-rust hover:underline" href="/schemas/intent-document.json">
             /schemas
           </a>
+          . Reference Discovery{" "}
+          <a className="text-rust hover:underline" href="https://discovery.intentexchange.dev">
+            discovery.intentexchange.dev
+          </a>
           .
         </p>
         <div className="mt-10 border-t border-ink/10 pt-6">
-          <p className="font-mono text-xs tracking-widest text-ink/50 uppercase">Run locally</p>
+          <p className="font-mono text-xs tracking-widest text-ink/50 uppercase">Install / run</p>
           <pre className="mt-3 font-mono text-sm leading-7 text-ink">
-            {`git clone https://github.com/intentexchange/iep.git
+            {`yarn add @iep/spec
+git clone https://github.com/intentexchange/iep.git
 yarn install
 yarn demo`}
           </pre>

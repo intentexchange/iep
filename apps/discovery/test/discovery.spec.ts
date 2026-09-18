@@ -44,6 +44,19 @@ const signIntent = async (
 };
 
 describe("discovery provider", () => {
+  it("serves a service document and health", async () => {
+    const root = await fetchWorker(new Request("http://discovery/"));
+    expect(root.status).toBe(200);
+    expect(await root.json()).toMatchObject({ service: "iep-discovery", iep: "0.2" });
+    const health = await fetchWorker(
+      new Request("http://discovery/v0/health", {
+        headers: { Origin: "https://intentexchange.dev" },
+      }),
+    );
+    expect(health.status).toBe(200);
+    expect(health.headers.get("access-control-allow-origin")).toBe("*");
+  });
+
   it("rejects sealed fields on publish", async () => {
     const keys = await generateKeyPair();
     const leaked = await signIntent(keys, {
