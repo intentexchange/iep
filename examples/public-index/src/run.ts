@@ -1,3 +1,5 @@
+import { resolve4 } from "node:dns/promises";
+import { request as httpsRequest } from "node:https";
 import { OFFER_1, PACK_ZERO_ID, WANT_1 } from "@iep/pack-zero";
 import {
   commit,
@@ -16,8 +18,63 @@ const usage = `yarn public-index [--role want|offer] [--withdraw]
 Talks to the hosted reference Discovery. A2A handshake still needs a reachable agent_card.
 `;
 
-const json = async (response: Response): Promise<unknown> => {
-  return response.json();
+type DiscoveryResponse = {
+  ok: boolean;
+  status: number;
+  json: () => Promise<unknown>;
+};
+
+const discoveryRequest = async (
+  url: string,
+  init: { method?: string; headers?: Record<string, string>; body?: string } = {},
+): Promise<DiscoveryResponse> => {
+  const parsed = new URL(url);
+  let connectHost = parsed.hostname;
+  try {
+    const ips = await resolve4(parsed.hostname);
+    const first = ips[0];
+    if (first) {
+      connectHost = first;
+    }
+  } catch {
+    // fall back to the hostname if recursive DNS fails
+  }
+  return new Promise((resolve, reject) => {
+    const req = httpsRequest(
+      {
+        protocol: "https:",
+        hostname: connectHost,
+        servername: parsed.hostname,
+        port: Number(parsed.port || 443),
+        path: `${parsed.pathname}${parsed.search}`,
+        method: init.method ?? "GET",
+        headers: {
+          Host: parsed.hostname,
+          ...(init.headers ?? {}),
+        },
+      },
+      (res) => {
+        const chunks: Buffer[] = [];
+        res.on("data", (chunk: Buffer) => {
+          chunks.push(chunk);
+        });
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          const status = res.statusCode ?? 500;
+          resolve({
+            ok: status >= 200 && status < 300,
+            status,
+            json: async () => JSON.parse(text) as unknown,
+          });
+        });
+      },
+    );
+    req.on("error", reject);
+    if (init.body) {
+      req.write(init.body);
+    }
+    req.end();
+  });
 };
 
 const flagValue = (args: string[], name: string): string | undefined => {
@@ -41,11 +98,11 @@ const main = async (): Promise<void> => {
     return;
   }
   const baseUrl = (process.env["IEP_DISCOVERY_URL"] ?? REFERENCE_DISCOVERY_URL).replace(/\/$/, "");
-  const healthResponse = await fetch(`${baseUrl}/v0/health`);
+  const healthResponse = await discoveryRequest(`${baseUrl}/v0/health`);
   if (!healthResponse.ok) {
     throw new Error(`discovery health failed: ${healthResponse.status}`);
   }
-  const health = (await json(healthResponse)) as { iep?: string };
+  const health = (await healthResponse.json()) as { iep?: string };
   process.stdout.write(`DISCOVERY ${baseUrl} iep=${health.iep ?? "?"}\n`);
 
   const keys = await generateKeyPair();
@@ -77,19 +134,19 @@ const main = async (): Promise<void> => {
     expires_at: expiresAt,
   };
   const doc = await signDocument<IntentDocument>(unsigned, keys.privateKeyPkcs8);
-  const put = await fetch(`${baseUrl}/v0/intents`, {
+  const put = await discoveryRequest(`${baseUrl}/v0/intents`, {
     method: "PUT",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(doc),
   });
   if (!put.ok) {
-    const body = (await json(put)) as { message?: string };
+    const body = (await put.json()) as { message?: string };
     throw new Error(body.message ?? `publish failed: ${put.status}`);
   }
   process.stdout.write(`PUBLISHED ${doc.id} role=${role} expires=${expiresAt}\n`);
 
   const seeking = role === "want" ? "offer" : "want";
-  const query = await fetch(`${baseUrl}/v0/query`, {
+  const query = await discoveryRequest(`${baseUrl}/v0/query`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
@@ -99,10 +156,10 @@ const main = async (): Promise<void> => {
     }),
   });
   if (!query.ok) {
-    const body = (await json(query)) as { message?: string };
+    const body = (await query.json()) as { message?: string };
     throw new Error(body.message ?? `query failed: ${query.status}`);
   }
-  const result = (await json(query)) as { intents: { id: string; agent_card: string }[] };
+  const result = (await query.json()) as { intents: { id: string; agent_card: string }[] };
   process.stdout.write(`HITS ${result.intents.length} seeking=${seeking}\n`);
   for (const hit of result.intents) {
     process.stdout.write(`  ${hit.id}  ${hit.agent_card}\n`);
@@ -116,7 +173,7 @@ const main = async (): Promise<void> => {
   }
   const ts = new Date().toISOString();
   const signature = await signCanonical({ method: "DELETE", id: doc.id, ts }, keys.privateKeyPkcs8);
-  const del = await fetch(`${baseUrl}/v0/intents/${doc.id}`, {
+  const del = await discoveryRequest(`${baseUrl}/v0/intents/${doc.id}`, {
     method: "DELETE",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ ts, signature }),
