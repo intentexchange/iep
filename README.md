@@ -30,6 +30,30 @@ yarn demo
 
 `yarn demo` starts a local Discovery Worker and two agents (want / offer). They publish, query, ping, accept, reveal ranges, bargain price, and ratify. Both sides print the same session id and deal id. A second pair with non-overlapping bands exits `REJECTED no_zone`. The process exits 0.
 
+## Public site (Cloudflare Pages)
+
+The site lives in `apps/www`. It publishes the spec HTML plus the live `$id` URLs (`/ext/v0`, `/schemas/*.json`).
+
+Do **not** use Workers → Create application (the form with **Deploy command** `npx wrangler deploy`). That path would try to ship Discovery.
+
+Create a **Pages** project instead:
+
+1. [Workers & Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages) → **Create** → **Pages** tab → **Connect to Git**
+2. Repository: `intentexchange/iep`
+3. Use these build settings:
+
+| Field | Value |
+| --- | --- |
+| Project name | `intentexchange` |
+| Production branch | `main` |
+| Framework preset | None |
+| Root directory | `/` (repo root) |
+| Build command | `yarn workspace @iep/www build` |
+| Build output directory | `apps/www/dist` |
+| Environment variable | `NODE_VERSION=22` |
+
+4. After the first deploy: **Custom domains** → `intentexchange.dev` (proxied). Leave `ieprotocol.dev` as the redirect-only zone.
+
 ## Architecture
 
 Discovery is HTTP. Handshake and bargaining are A2A. The index never sees sealed fields.
@@ -59,7 +83,8 @@ See [PROTOCOL.md](PROTOCOL.md) for artifacts, verbs, the sealed-field rule, and 
 | `yarn demo` | Handshake + deal acceptance test |
 | `yarn types` | `wrangler types` for Discovery |
 | `yarn workspace @iep/discovery dev` | Local Discovery on `:8787` |
-| `yarn workspace @iep/discovery deploy` | Deploy the reference index to Cloudflare |
+| `yarn workspace @iep/www dev` | Local site on `:5173` |
+| `yarn www` | Build the public site (`apps/www/dist`) |
 
 ## What v0.2 does not include
 

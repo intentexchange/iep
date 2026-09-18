@@ -1,5 +1,7 @@
 node_modules
 dist
+apps/www/public/schemas
+apps/www/public/ext
 .wrangler
 .dev.vars
 .dev.vars.*

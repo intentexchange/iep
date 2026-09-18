@@ -13,6 +13,7 @@
     "build": "yarn workspace @iep/spec build && yarn workspace @iep/pack-zero build && yarn workspace @iep/agent build && yarn workspace @iep/handshake build",
     "test": "yarn workspace @iep/spec build && yarn workspace @iep/spec test && yarn workspace @iep/pack-zero build && yarn workspace @iep/pack-zero test && yarn workspace @iep/discovery test && yarn workspace @iep/agent test",
     "demo": "yarn build && yarn workspace @iep/handshake start",
+    "www": "yarn workspace @iep/www build",
     "types": "yarn workspace @iep/discovery types"
   },
   "engines": {
