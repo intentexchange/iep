@@ -1,0 +1,28 @@
+{
+  "name": "@iep/agent",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "iep-agent": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "start": "node dist/cli.js"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "1.2.0",
+    "@iep/pack-zero": "0.1.0",
+    "@iep/spec": "0.1.0",
+    "express": "5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.3",
+    "@types/node": "24.5.2",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  }
+}

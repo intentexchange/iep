@@ -1,0 +1,1 @@
+ALTER TABLE intents ADD COLUMN principal_did TEXT NOT NULL DEFAULT '';

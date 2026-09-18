@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intentexchange.dev/schemas/intent-document.json",
+  "title": "IntentDocument",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "iep",
+    "schema",
+    "role",
+    "principal_did",
+    "agent_did",
+    "agent_card",
+    "public_body",
+    "commit_sealed",
+    "commit_public",
+    "mandate_cid",
+    "discovery_providers",
+    "expires_at",
+    "signature"
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "iep": { "const": "0.2" },
+    "schema": { "type": "string", "minLength": 1 },
+    "role": { "type": "string", "minLength": 1 },
+    "principal_did": { "type": "string", "minLength": 1 },
+    "agent_did": { "type": "string", "minLength": 1 },
+    "agent_card": { "type": "string", "format": "uri" },
+    "public_body": { "type": "object" },
+    "commit_sealed": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "commit_public": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "mandate_cid": { "type": "string", "minLength": 1 },
+    "discovery_providers": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "signature": { "type": "string", "minLength": 1 }
+  }
+}

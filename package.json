@@ -1,0 +1,27 @@
+{
+  "name": "iep",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Intent Exchange Protocol — spec, reference discovery, and reference agent",
+  "license": "Apache-2.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "yarn workspace @iep/spec build && yarn workspace @iep/pack-zero build && yarn workspace @iep/agent build && yarn workspace @iep/handshake build",
+    "test": "yarn workspace @iep/spec build && yarn workspace @iep/spec test && yarn workspace @iep/pack-zero build && yarn workspace @iep/pack-zero test && yarn workspace @iep/discovery test && yarn workspace @iep/agent test",
+    "demo": "yarn build && yarn workspace @iep/handshake start",
+    "types": "yarn workspace @iep/discovery types"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vite": "7.3.6",
+    "vitest": "4.1.11"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}

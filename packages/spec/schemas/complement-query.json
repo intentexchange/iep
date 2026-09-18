@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intentexchange.dev/schemas/complement-query.json",
+  "title": "ComplementQuery",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "seeking_role"],
+  "properties": {
+    "schema": { "type": "string", "minLength": 1 },
+    "seeking_role": { "type": "string", "minLength": 1 },
+    "my_intent_id": { "type": "string", "format": "uuid" },
+    "public_body": { "type": "object" },
+    "cursor": { "type": "string" },
+    "limit": { "type": "integer", "minimum": 1, "maximum": 100 }
+  },
+  "anyOf": [
+    { "required": ["my_intent_id"] },
+    { "required": ["public_body"] }
+  ]
+}

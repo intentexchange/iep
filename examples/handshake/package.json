@@ -1,0 +1,20 @@
+{
+  "name": "@iep/handshake",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/run.js"
+  },
+  "dependencies": {
+    "@iep/agent": "0.1.0",
+    "@iep/pack-zero": "0.1.0",
+    "@iep/spec": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "typescript": "5.9.3"
+  }
+}

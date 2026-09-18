@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intentexchange.dev/schemas/verb-envelope.json",
+  "title": "VerbEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "iep",
+    "verb",
+    "from_intent",
+    "to_intent",
+    "nonce",
+    "ts",
+    "body",
+    "signature"
+  ],
+  "properties": {
+    "iep": { "const": "0.2" },
+    "verb": { "enum": ["ping", "accept", "reject", "reveal", "propose", "ratify"] },
+    "from_intent": { "type": "string", "format": "uuid" },
+    "to_intent": { "type": "string", "format": "uuid" },
+    "nonce": { "type": "string", "minLength": 1 },
+    "ts": { "type": "string", "format": "date-time" },
+    "body": { "type": "object" },
+    "signature": { "type": "string", "minLength": 1 }
+  }
+}

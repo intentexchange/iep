@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intentexchange.dev/schemas/query-result.json",
+  "title": "QueryResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["intents"],
+  "properties": {
+    "intents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "public_body", "agent_card"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "public_body": { "type": "object" },
+          "agent_card": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "cursor": { "type": ["string", "null"] }
+  }
+}

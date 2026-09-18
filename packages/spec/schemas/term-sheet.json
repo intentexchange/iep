@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intentexchange.dev/schemas/term-sheet.json",
+  "title": "TermSheet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["session_id", "schema", "round", "alpha_intent", "beta_intent", "terms"],
+  "properties": {
+    "session_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "schema": { "type": "string", "minLength": 1 },
+    "round": { "type": "integer", "minimum": 1 },
+    "alpha_intent": { "type": "string", "format": "uuid" },
+    "beta_intent": { "type": "string", "format": "uuid" },
+    "terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["price", "start_at"],
+      "properties": {
+        "price": { "type": "number" },
+        "start_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

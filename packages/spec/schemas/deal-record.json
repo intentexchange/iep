@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intentexchange.dev/schemas/deal-record.json",
+  "title": "DealRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["deal_id", "session_id", "term_sheet", "ratifications"],
+  "properties": {
+    "deal_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "session_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "term_sheet": { "$ref": "https://intentexchange.dev/schemas/term-sheet.json" },
+    "ratifications": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["iep", "session_id", "term_sheet_hash", "principal_did", "ts", "principal_signature"],
+        "properties": {
+          "iep": { "const": "0.2" },
+          "session_id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "term_sheet_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "principal_did": { "type": "string", "minLength": 1 },
+          "ts": { "type": "string", "format": "date-time" },
+          "principal_signature": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
