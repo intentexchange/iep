@@ -1,12 +1,12 @@
 {
-  "name": "@iep/public-index",
+  "name": "@iep/public-handshake",
   "version": "0.2.0",
   "private": true,
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "tsc -p tsconfig.json && node dist/run.js"
+    "start": "node dist/run.js"
   },
   "dependencies": {
     "@iep/agent": "0.1.0",

@@ -10,11 +10,12 @@
     "examples/*"
   ],
   "scripts": {
-    "build": "yarn workspace @intentexchange/spec build && yarn workspace @iep/pack-zero build && yarn workspace @iep/agent build && yarn workspace @iep/handshake build",
+    "build": "yarn workspace @intentexchange/spec build && yarn workspace @iep/pack-zero build && yarn workspace @iep/agent build && yarn workspace @iep/handshake build && yarn workspace @iep/public-handshake build",
     "test": "yarn workspace @intentexchange/spec build && yarn workspace @intentexchange/spec test && yarn workspace @iep/pack-zero build && yarn workspace @iep/pack-zero test && yarn workspace @iep/discovery test && yarn workspace @iep/agent test",
     "demo": "yarn build && yarn workspace @iep/handshake start",
     "www": "yarn workspace @iep/www build",
-    "public-index": "yarn workspace @intentexchange/spec build && yarn workspace @iep/pack-zero build && yarn workspace @iep/public-index start",
+    "public-index": "yarn workspace @intentexchange/spec build && yarn workspace @iep/pack-zero build && yarn workspace @iep/agent build && yarn workspace @iep/public-index start",
+    "public-handshake": "yarn build && yarn workspace @iep/public-handshake start",
     "types": "yarn workspace @iep/discovery types"
   },
   "engines": {

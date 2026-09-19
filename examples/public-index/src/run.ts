@@ -1,5 +1,4 @@
-import { resolve4 } from "node:dns/promises";
-import { request as httpsRequest } from "node:https";
+import { discoveryRequest, useRecursiveDns } from "@iep/agent";
 import { OFFER_1, PACK_ZERO_ID, WANT_1 } from "@iep/pack-zero";
 import {
   commit,
@@ -15,67 +14,9 @@ import {
 } from "@intentexchange/spec";
 
 const usage = `yarn public-index [--role want|offer] [--withdraw]
-Talks to the hosted reference Discovery. A2A handshake still needs a reachable agent_card.
+Talks to the hosted reference Discovery (HTTP only).
+agent_card is a placeholder and is not an A2A endpoint. Use yarn public-handshake for ping through ratify.
 `;
-
-type DiscoveryResponse = {
-  ok: boolean;
-  status: number;
-  json: () => Promise<unknown>;
-};
-
-const discoveryRequest = async (
-  url: string,
-  init: { method?: string; headers?: Record<string, string>; body?: string } = {},
-): Promise<DiscoveryResponse> => {
-  const parsed = new URL(url);
-  let connectHost = parsed.hostname;
-  try {
-    const ips = await resolve4(parsed.hostname);
-    const first = ips[0];
-    if (first) {
-      connectHost = first;
-    }
-  } catch {
-    // fall back to the hostname if recursive DNS fails
-  }
-  return new Promise((resolve, reject) => {
-    const req = httpsRequest(
-      {
-        protocol: "https:",
-        hostname: connectHost,
-        servername: parsed.hostname,
-        port: Number(parsed.port || 443),
-        path: `${parsed.pathname}${parsed.search}`,
-        method: init.method ?? "GET",
-        headers: {
-          Host: parsed.hostname,
-          ...(init.headers ?? {}),
-        },
-      },
-      (res) => {
-        const chunks: Buffer[] = [];
-        res.on("data", (chunk: Buffer) => {
-          chunks.push(chunk);
-        });
-        res.on("end", () => {
-          const text = Buffer.concat(chunks).toString("utf8");
-          const status = res.statusCode ?? 500;
-          resolve({
-            ok: status >= 200 && status < 300,
-            status,
-            json: async () => JSON.parse(text) as unknown,
-          });
-        });
-      },
-    );
-    req.on("error", reject);
-    if (init.body) {
-      req.write(init.body);
-    }
-    req.end();
-  });
-};
 
 const flagValue = (args: string[], name: string): string | undefined => {
   const index = args.indexOf(name);
@@ -97,6 +38,7 @@ const main = async (): Promise<void> => {
     process.exitCode = 1;
     return;
   }
+  useRecursiveDns();
   const baseUrl = (process.env["IEP_DISCOVERY_URL"] ?? REFERENCE_DISCOVERY_URL).replace(/\/$/, "");
   const healthResponse = await discoveryRequest(`${baseUrl}/v0/health`);
   if (!healthResponse.ok) {
@@ -125,6 +67,7 @@ const main = async (): Promise<void> => {
     role,
     principal_did: keys.did,
     agent_did: keys.did,
+    // Placeholder, not an A2A agent card. Handshake needs yarn public-handshake.
     agent_card: "https://intentexchange.dev",
     public_body: fixture.public_body,
     commit_sealed: await commit({ reserve: role === "want" ? 40 : 50 }),

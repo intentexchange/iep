@@ -12,7 +12,9 @@ This repository is the v0.2 reference implementation:
 | `@iep/pack-zero` | Toy schema pack `iep:exchange.v0` (`want` / `offer`) |
 | `@iep/discovery` | Reference Discovery Provider (Cloudflare Workers + D1) |
 | `@iep/agent` | Reference A2A agent (publish, query, ping, reveal, propose, ratify) |
-| `@iep/handshake` | End-to-end demo: session id + deal id |
+| `@iep/handshake` | Local end-to-end demo: session id + deal id |
+| `@iep/public-index` | Publish + query against the hosted Discovery (HTTP only) |
+| `@iep/public-handshake` | Full ping→ratify against the hosted Discovery |
 
 Apache-2.0. Discovery is a role anyone can host. Sealed memory never leaves the agent process. Ranking is not Discovery's job.
 
@@ -36,6 +38,14 @@ yarn test
 yarn demo
 ```
 
+Three rungs:
+
+| Command | What it proves |
+| --- | --- |
+| `yarn demo` | Local loop: Discovery Worker on `:8787` plus two agents through ratify |
+| `yarn public-index` | Hosted Discovery HTTP only (`PUT` / `POST /v0/query`). `agent_card` is a placeholder, not an A2A endpoint |
+| `yarn public-handshake` | Hosted Discovery plus A2A ping→ratify. Needs `cloudflared` or `IEP_WANT_PUBLIC_URL` / `IEP_OFFER_PUBLIC_URL` |
+
 `yarn demo` starts a local Discovery Worker and two agents (want / offer). They publish, query, ping, accept, reveal ranges, bargain price, and ratify. Both sides print the same session id and deal id. A second pair with non-overlapping bands exits `REJECTED no_zone`. The process exits 0.
 
 The hosted reference index is [discovery.intentexchange.dev](https://discovery.intentexchange.dev) (`GET /v0/health`).
@@ -48,7 +58,16 @@ yarn public-index
 yarn workspace @iep/public-index start --role offer
 ```
 
-Publishes a pack-zero `want` (or `offer`) to the hosted index, then queries for the complementary role. Intents expire in 7 days. Handshake still needs a reachable `agent_card`; this command only exercises Discovery HTTP. Optional `--withdraw` deletes the intent after the query.
+Publishes a pack-zero `want` (or `offer`) to the hosted index, then queries for the complementary role. Intents expire in 7 days. This command only exercises Discovery HTTP. Optional `--withdraw` deletes the intent after the query.
+
+## Public handshake
+
+```bash
+yarn install
+yarn public-handshake
+```
+
+Two local agents publish to the hosted index with reachable HTTPS `agent_card` URLs (Cloudflare quick tunnels, or origins you pass in `IEP_WANT_PUBLIC_URL` and `IEP_OFFER_PUBLIC_URL`). They hunt, bargain, print the same session id and deal id, then withdraw. Intents expire in 1 hour. Without tunnels or those env vars the process exits 2 and prints the bind URLs.
 
 ## Public site (Cloudflare Pages)
 
@@ -98,15 +117,16 @@ See [PROTOCOL.md](PROTOCOL.md) for artifacts, verbs, the sealed-field rule, and 
 
 | Command | What it does |
 | --- | --- |
-| `yarn build` | Compile spec, pack, agent, handshake |
+| `yarn build` | Compile spec, pack, agent, handshake, public-handshake |
 | `yarn test` | Unit + Worker tests |
-| `yarn demo` | Handshake + deal acceptance test |
+| `yarn demo` | Local handshake + deal acceptance test |
 | `yarn types` | `wrangler types` for Discovery |
 | `yarn workspace @iep/discovery dev` | Local Discovery on `:8787` |
 | `yarn workspace @iep/discovery deploy` | Deploy the reference index to Cloudflare |
 | `yarn workspace @iep/www dev` | Local site on `:5173` |
 | `yarn www` | Build the public site (`apps/www/dist`) |
 | `yarn public-index` | Publish + query against the hosted Discovery |
+| `yarn public-handshake` | Ping through ratify against the hosted Discovery |
 
 ## What v0.2 does not include
 

@@ -79,6 +79,7 @@ const runConfigured = async (args: string[]): Promise<void> => {
     discovery_url: string;
     port: number;
     host?: string;
+    public_url?: string;
     principal?: "auto" | "deny";
   };
   const mandate = parseMandate(await loadJson(resolve(dir, "mandate.json")));
@@ -99,6 +100,9 @@ const runConfigured = async (args: string[]): Promise<void> => {
     discoveryUrl: agentJson.discovery_url,
     port: agentJson.port,
     host: agentJson.host ?? "127.0.0.1",
+    ...(typeof agentJson.public_url === "string" && agentJson.public_url.length > 0
+      ? { publicUrl: agentJson.public_url }
+      : {}),
     publicBody: intent.public,
     sealedBody: intent.sealed,
   });

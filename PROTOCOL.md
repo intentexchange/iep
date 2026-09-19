@@ -78,3 +78,5 @@ Reference provider: `https://discovery.intentexchange.dev`. Discovery is a role;
 ## A2A
 
 Each reference agent serves `/.well-known/agent-card.json` and JSON-RPC on `/`. The card advertises skill `intent-exchange` and extension `https://intentexchange.dev/ext/v0`. Clients send header `A2A-Extensions: https://intentexchange.dev/ext/v0`.
+
+`agent_card` on a published intent MUST be a publicly reachable HTTPS URL for a session to be possible. Discovery stores the URL and does not fetch or verify it. `yarn public-index` publishes a placeholder card; `yarn public-handshake` publishes live cards.

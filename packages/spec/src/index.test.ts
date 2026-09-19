@@ -10,15 +10,19 @@ import {
   dealId,
   generateKeyPair,
   mandateCid,
+  parseKeyPair,
   ratificationPayload,
   sessionId,
+  signCanonical,
   signDocument,
   signRatification,
   termSheetHash,
+  verifyCanonical,
   verifyRatification,
   verifySignedDocument,
 } from "./crypto.js";
 import { publicKeyToDidKey } from "./did.js";
+import { base64UrlToBytes } from "./encoding.js";
 import { ERROR_CODES, IepError } from "./errors.js";
 import { isComplement } from "./predicates.js";
 import { assertFreshTs, rememberNonce, transition } from "./session.js";
@@ -152,6 +156,38 @@ describe("crypto", () => {
     const id = await dealId(sheet.session_id, hash);
     expect(id).toBe(await dealId(sheet.session_id, hash));
     expect(id).not.toBe(await dealId(sheet.session_id, "b".repeat(64)));
+  });
+
+  it("matches golden session_id, deal_id, term_sheet_hash, and JCS signature bytes", async () => {
+    const session = await sessionId("nonce-1", "sig-1");
+    expect(session).toBe("1eea2490e896a03bd6ea735bf5773e12ca03a3539c3d9552f741e21dc71013f4");
+    const sheet: TermSheet = {
+      session_id: "a".repeat(64),
+      schema: "iep:exchange.v0",
+      round: 3,
+      alpha_intent: "11111111-1111-4111-8111-111111111111",
+      beta_intent: "22222222-2222-4222-8222-222222222222",
+      terms: { price: 51.25, start_at: "2026-11-01T00:00:00.000Z" },
+    };
+    const hash = await termSheetHash(sheet);
+    expect(hash).toBe("01b07f6fa3718b2b81d6b3c6e79786fd439011f734f325120bff772fb2ae2eee");
+    expect(await dealId(sheet.session_id, hash)).toBe(
+      "b1173eb5f40342b40425f4331be1cb2b7eef5794e7fd70a08bd884820e7ab4b9",
+    );
+    const publicKey = base64UrlToBytes("xgDoqNNjsz2r-A_PHcXA5_EDXncVsijJDn0Rs3QVotM");
+    const keys = parseKeyPair(
+      JSON.stringify({
+        did: publicKeyToDidKey(publicKey),
+        publicKey: "xgDoqNNjsz2r-A_PHcXA5_EDXncVsijJDn0Rs3QVotM",
+        privateKeyPkcs8: "MC4CAQAwBQYDK2VwBCIEIAmjVhKSTJqpCcXiA5SHHRpv1uR6JvnDPewCOtXnf-mK",
+      }),
+    );
+    const payload = { hello: "iep", n: 1 };
+    const signature = await signCanonical(payload, keys.privateKeyPkcs8);
+    expect(signature).toBe(
+      "9zEHTxX6SKLpVJ-jb6kl_5akWLeOXlUTJT0jS9pnXWv9Ce56NtYJDgBmZaQ9nKM7gOe9Ul0_-8ZJgY_6i681Dw",
+    );
+    expect(await verifyCanonical(payload, signature, keys.publicKey)).toBe(true);
   });
 });
 

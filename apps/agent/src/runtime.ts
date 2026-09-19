@@ -24,6 +24,7 @@ import {
   parseRatifyBody,
   parseRevealBody,
   sessionId,
+  signCanonical,
   signDocument,
   termSheetHash,
   transition,
@@ -42,6 +43,7 @@ import {
 import express from "express";
 import { DiscoveryClient } from "./discovery-client.js";
 import { extractEnvelopeFromResult, extractFailureText, IepExecutor } from "./executor.js";
+import { useRecursiveDns } from "./http.js";
 import { decide } from "./negotiate.js";
 import {
   applyOutbound,
@@ -68,6 +70,7 @@ export type StartedAgent = {
   publish: () => Promise<IntentDocument>;
   hunt: () => Promise<SessionRecord[]>;
   negotiate: (sessionId: string) => Promise<SessionRecord>;
+  withdraw: () => Promise<void>;
   stop: () => Promise<void>;
 };
 
@@ -121,8 +124,12 @@ export const startAgent = async (config: AgentRuntimeConfig): Promise<StartedAge
     return published.id;
   };
 
-  const agentCardUrl = `http://${config.host}:${config.port}/${AGENT_CARD_PATH}`;
-  const jsonRpcUrl = `http://${config.host}:${config.port}/`;
+  const origin = (config.publicUrl ?? `http://${config.host}:${config.port}`).replace(/\/$/u, "");
+  const agentCardUrl = `${origin}/${AGENT_CARD_PATH}`;
+  const jsonRpcUrl = `${origin}/`;
+  if (origin.startsWith("https:")) {
+    useRecursiveDns();
+  }
 
   const card: AgentCard = {
     name: `IEP ${config.role} agent`,
@@ -380,9 +387,11 @@ export const startAgent = async (config: AgentRuntimeConfig): Promise<StartedAge
       const right = JSON.stringify(b.public_body);
       return left.localeCompare(right);
     });
-    const cap = Math.min(config.mandate.ping_cap, ranked.length);
     const created: SessionRecord[] = [];
-    for (const hit of ranked.slice(0, cap)) {
+    for (const hit of ranked) {
+      if (created.length >= config.mandate.ping_cap) {
+        break;
+      }
       try {
         const pingUnsigned: UnsignedVerbEnvelope = {
           iep: IEP_VERSION,
@@ -496,6 +505,18 @@ export const startAgent = async (config: AgentRuntimeConfig): Promise<StartedAge
     }
   };
 
+  const withdraw = async (): Promise<void> => {
+    if (!published) {
+      return;
+    }
+    const ts = new Date().toISOString();
+    const signature = await signCanonical(
+      { method: "DELETE", id: published.id, ts },
+      config.keys.privateKeyPkcs8,
+    );
+    await discovery.delete(published.id, ts, signature);
+  };
+
   const stop = async (): Promise<void> => {
     await new Promise<void>((resolve, reject) => {
       server.close((error) => {
@@ -509,13 +530,16 @@ export const startAgent = async (config: AgentRuntimeConfig): Promise<StartedAge
   };
 
   return {
-    intentId: "",
+    get intentId() {
+      return published?.id ?? "";
+    },
     agentCardUrl,
     getSessions: () => sessions.list().map(toRecord),
     getDeals: () => sessions.deals(),
     publish,
     hunt,
     negotiate,
+    withdraw,
     stop,
   };
 };

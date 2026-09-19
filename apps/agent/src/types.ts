@@ -23,6 +23,7 @@ export type AgentRuntimeConfig = {
   discoveryUrl: string;
   port: number;
   host: string;
+  publicUrl?: string;
   publicBody: JsonObject;
   sealedBody: JsonObject;
 };
